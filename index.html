@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--
+
+  This file contains the skeleton needed to retrieve and display the
+  latest track scrobbles for a sound zone, utilizing the basic scrobble API
+  defined in scrobble-api.js. 
+
+  Existing code is written using standard Javascript APIs, albeit with a number
+  of features only available in modern browsers (including newer versions of
+  Chrome, Edge, Firefox and Safari).
+
+  Your objective is to improve the existing presentation and code base in any
+  way you like. You do not need to look into scrobble-api.js.
+
+  Possible improvements include:
+  * Add some style, preferably without integrating an entire CSS framework like bootstrap
+  * Make the list responsive
+  * Add animations (loading spinner, fade/slide in scrobbles, etc.)
+  * Fade in album art when loaded, rendering a placeholder using scrobble.colors.(primary|accent)
+  * Display the currently playing track with cover art in one column, and a track history in another
+  * Only display the currently playing track in a kiosk-like mode
+  * Rotate/carousel through the scrobbles, displaying one at a time with a nice presentation
+  * Linkify tracks/artists using uri/artists[i].uri from the scrobble records
+  * Utilize any other data available in each scrobble (duration_ms, channel_name, uri, etc.)
+  * Display play time in a relative format (X seconds/minutes/hours ago)
+  * Re-implement using your favorite JS framework, or try a new one
+
+-->
+<html>
+<head>
+    <title>Now Playing</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+      .played__row-template { display: none; }
+      .played__cover {
+        max-width: 4em;
+        max-height: 4em;
+      }
+    </style>
+</head>
+<body>
+  <main id="app">
+    <table class="played">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="played__title">Title</th>
+          <th class="played__artists">Artists</th>
+          <th class="played__time">Played</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="played__row-template">
+          <td><img class="played__cover" alt=""></td>
+          <td class="played__title"></td>
+          <td class="played__artists"></td>
+          <td class="played__time"></td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <script src="scrobble-api.js"></script>
+  <script>
+    const zoneId = 'U291bmRab25lLCwxano5YXYzcjd5OC9Mb2NhdGlvbiwsMWptZjV1aTBrNWMvQWNjb3VudCwsMW5kbWR6bmF5Z3cv'
+    const api = new ScrobbleApi(zoneId, addScrobble)
+    api.fetchHistory().then(scrobbles => {
+      scrobbles.map(addScrobble)
+      api.subscribe(addScrobble)
+    })
+
+    // Prepends the provided scrobble to the table
+    function addScrobble(data) {
+      const $node = document.querySelector('.played__row-template').cloneNode(true)
+      $node.classList.remove('played__row-template')
+
+      ;[
+        ['title', data.song_name],
+        ['cover', data.image_url],
+        ['artists', data.artists.map(artist => artist.name).join(', ')],
+        ['time', ScrobbleApi.playDate(data).toLocaleString()],
+      ].forEach(kv => {
+        const $elem = $node.querySelector('.played__' + kv[0])
+        switch ($elem.nodeName) {
+          case 'IMG':
+            $elem.src = kv[1]
+            break
+          default:
+            $elem.textContent = kv[1]
+        }
+      })
+
+      const $container = document.querySelector('.played tbody')
+      $container.insertBefore($node, $container.firstChild)
+    }
+  </script>
+</body>
+</html>
