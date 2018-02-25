@@ -4,6 +4,10 @@
     "sourceType": "module",
     "allowImportExportEverywhere": true
   },
+  "globals": {
+    "describe": true,
+    "it": true
+  },
   "extends": "standard",
   "env": {
     "browser": true,
@@ -11,6 +15,7 @@
   },
   "rules": {
     "semi": ["error", "never"],
+    "camelcase": ["off"],
     "no-extra-semi": "error",
     "arrow-parens": ["off"],
     "compat/compat": "off",

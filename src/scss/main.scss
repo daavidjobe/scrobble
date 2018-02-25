@@ -1,0 +1,16 @@
+@import 'variables';
+@import 'ui';
+@import 'scrobbles';
+@import 'spotify-player';
+
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial';
+}
+
+.wrapper {
+  max-width: 990px;
+  margin: 0 auto;
+}

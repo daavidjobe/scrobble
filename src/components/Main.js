@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import List from './scrobbles/List'
+import ListItem from './scrobbles/ListItem'
 
 export default class Main extends Component {
   state = {
@@ -9,15 +11,18 @@ export default class Main extends Component {
     this.props.fetchHistory()
   }
 
-  renderRows = () => {
-    return this.props.scrobbles
-      .map(scrobble => <div>scrobble</div>)
-  }
-
   render () {
+    const { scrobbles } = this.props
     return (
       <div className='wrapper'>
-        {this.renderRows()}
+        <List>
+          {
+            scrobbles
+              .map((s, i) =>
+                <ListItem key={i} {...s} />
+              )
+          }
+        </List>
       </div>
     )
   }

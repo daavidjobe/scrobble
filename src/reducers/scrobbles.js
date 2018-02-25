@@ -9,12 +9,12 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH: {
       return Object.assign({}, state, {
-        scrobbles: action.data
+        scrobbles: action.data.sort((a, b) => b.iso8601_at - a.iso8601_at)
       })
     }
     case NEW: {
       return Object.assign({}, state, {
-        scrobbles: [...state.scrobbles, action.data]
+        scrobbles: [action.data, ...state.scrobbles]
       })
     }
     default:

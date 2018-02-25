@@ -3,6 +3,8 @@ import { render } from 'react-dom'
 import Root from './containers/Root'
 import { configureStore } from './store/configure-store.js'
 
+import './scss/main.scss'
+
 const store = configureStore()
 
 render(

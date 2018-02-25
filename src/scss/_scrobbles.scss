@@ -1,0 +1,55 @@
+.scrobbles {
+  padding: 0;
+  margin: 10px;
+
+  .scrobbles-item {
+    display: flex;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: transform 200ms, box-shadow 400ms ease;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    
+
+    &:hover {
+      transform: translateX(-5px);
+      box-shadow: 2px 0 6px 4px #ccc;
+    }
+
+    &__image-wrapper {
+      width: 120px;
+      height: 120px;
+
+      img {
+        width: 100%;
+        min-width: 100px;
+      }
+    }
+
+    &__info {
+      padding: 10px;
+      p {
+        margin: 0 0 5px 0;
+      }
+    }
+
+    &__song {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    &__artist {
+    }
+
+    &__channel {
+      color: #ccc;
+    }
+
+    &__played {
+      font-size: 0.9rem;
+      color: #ccc;
+      position: absolute;
+      bottom: 10px;
+    }
+  }
+}

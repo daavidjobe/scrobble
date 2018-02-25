@@ -1,0 +1,28 @@
+
+.image {
+  position: relative;
+  background-color: $syb-blue;
+  text-align: center;
+
+  svg {
+    margin: 30px;
+  }
+
+  img {
+    opacity: 0;
+    transition: opacity 600ms ease-out;
+  }
+
+  &--loaded {
+    background-color: transparent;
+    img {
+      opacity: 1;
+    }
+  }
+
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
