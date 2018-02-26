@@ -9,7 +9,7 @@ export default ({ artists, image_url, song_name, iso8601_at, uri, duration_ms, c
   return (
     <li className='scrobbles-item'>
       <div className="scrobbles-item__image-wrapper">
-        <Image src={image_url} throttle={300} />
+        <Image src={image_url} throttle={50} />
       </div>
       <div className="scrobbles-item__info">
         <p className="scrobbles-item__song">{song_name}</p>

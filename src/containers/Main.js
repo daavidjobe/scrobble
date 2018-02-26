@@ -5,7 +5,7 @@ import Main from '../components/Main'
 const mapStateToProps = ({ scrobbles }) => scrobbles
 
 const bindActionsToDispatch = dispatch => ({
-  fetchHistory: () => fetchHistory().then(dispatch)
+  fetchHistory: () => fetchHistory(dispatch).then(dispatch)
 })
 
 export default connect(mapStateToProps, bindActionsToDispatch)(Main)

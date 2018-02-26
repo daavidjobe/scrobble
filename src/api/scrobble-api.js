@@ -1,13 +1,12 @@
 /* eslint-env browser, amd */
 (function () {
-
   /**
    * Instantiable sound zone track scrobble API.
    *
    * @class
    * @param {string} zoneId - Zone id to fetch data for
    */
-  function ScrobbleApi(zoneId) {
+  function ScrobbleApi (zoneId) {
     if (typeof zoneId !== 'string' || !zoneId.length) {
       throw new Error('ScrobbleApi must be instantiated with a valid zoneId')
     }
@@ -23,8 +22,8 @@
    *
    * @return {Promise} Resolves to array of scrobble objects.
    */
-  function fetchHistory() {
-    const url = 'https://radio.api.soundtrackyourbrand.com/sound_zones/'+this.zoneId+'/history_tracks/latest'
+  function fetchHistory () {
+    const url = 'https://radio.api.soundtrackyourbrand.com/sound_zones/' + this.zoneId + '/history_tracks/latest'
     return fetch(url, {
       headers: {
         'x-api-version': 10, // required header
@@ -45,7 +44,7 @@
    * @param {function} onScrobble - Function called whenever a track update is received
    * @return {object} WebSocket instance
    */
-  function subscribe(onScrobble) {
+  function subscribe (onScrobble) {
     const self = this
 
     if (typeof onScrobble !== 'function') {
@@ -54,18 +53,18 @@
 
     self.socket = new WebSocket('wss://ws.soundtrackyourbrand.com/ws/?EIO=3&transport=websocket')
 
-    function ping() {
+    function ping () {
       self.socket.send('2')
       setTimeout(ping, 20e3)
     }
 
-    this.socket.onopen = function onOpen() {
+    this.socket.onopen = function onOpen () {
       console.info('[socket] connected')
     }
-    this.socket.onclose = function onClose() {
+    this.socket.onclose = function onClose () {
       console.info('[socket] disconnected')
     }
-    this.socket.onmessage = function onMessage(msg) {
+    this.socket.onmessage = function onMessage (msg) {
       // Minimal socket.io protocol implmentation
       let i = 0, type, namespace, payload // eslint-disable-line no-unused-vars
       // Act on each possible packet type
@@ -74,7 +73,7 @@
           payload = JSON.parse(msg.data.substr(i))
           ping()
           // Subscribe to track scrobbles for the zone
-          self.socket.send('40/sound_zone/'+self.zoneId+'/scrobbles')
+          self.socket.send('40/sound_zone/' + self.zoneId + '/scrobbles')
           return
         case 4: // MESSAGE
           type = parseInt(msg.data.charAt(i++), 10)
@@ -91,7 +90,6 @@
             console.info('[socket]', payload[1].data)
           }
           // console.info('[socket]', {type, namespace, payload })
-          return
       }
     }
 
@@ -105,7 +103,7 @@
    * @param {object} data - Scrobble data object
    * @return {Date} Play date
    */
-  function playDate(data) {
+  function playDate (data) {
     const str = data.iso8601_at
     return new Date(Date.UTC(
       str.substr(0, 4),
@@ -122,8 +120,8 @@
     ScrobbleApi.default = ScrobbleApi
     module.exports = ScrobbleApi
   } else if (typeof define === 'function' && typeof define.amd === 'object') {
-    define('api', [], function() { return ScrobbleApi })
+    define('api', [], function () { return ScrobbleApi })
   } else {
     window.ScrobbleApi = ScrobbleApi
   }
-}());
+}())

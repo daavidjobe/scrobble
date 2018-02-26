@@ -4,11 +4,12 @@ export const NEW = 'NEW'
 
 const zoneId = 'U291bmRab25lLCwxano5YXYzcjd5OC9Mb2NhdGlvbiwsMWptZjV1aTBrNWMvQWNjb3VudCwsMW5kbWR6bmF5Z3cv'
 
-export const fetchHistory = () => {
-  const api = new ScrobbleApi(zoneId, appendScrobble)
+export const fetchHistory = (dispatch) => {
+  const cb = appendScrobble.bind(null, dispatch)
+  const api = new ScrobbleApi(zoneId, cb)
   return api.fetchHistory()
     .then(scrobbles => {
-      api.subscribe(appendScrobble)
+      api.subscribe(cb)
       return {
         type: FETCH,
         data: scrobbles
@@ -16,7 +17,10 @@ export const fetchHistory = () => {
     })
 }
 
-const appendScrobble = (data) => ({
-  type: NEW,
-  data
-})
+const appendScrobble = (dispatch, data) => {
+  console.log('data, dispatch', data, dispatch)
+  return dispatch({
+    type: NEW,
+    data
+  })
+}
